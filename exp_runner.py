@@ -89,6 +89,7 @@ class Runner:
 
         if latest_model_name is not None:
             logging.info('Find checkpoint: {}'.format(latest_model_name))
+            print("Loading latest checkpoint...")
             self.load_checkpoint(latest_model_name)
 
         # Backup codes and configs for debug
