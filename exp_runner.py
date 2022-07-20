@@ -87,6 +87,7 @@ class Runner:
             model_list.sort()
             latest_model_name = model_list[-1]
 
+        print("Latest model probably none")
         if latest_model_name is not None:
             logging.info('Find checkpoint: {}'.format(latest_model_name))
             print("Loading latest checkpoint...")
