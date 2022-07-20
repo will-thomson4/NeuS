@@ -81,6 +81,7 @@ class Runner:
         if is_continue:
             model_list_raw = os.listdir(os.path.join(self.base_exp_dir, 'checkpoints'))
             model_list = []
+            print("Raw list", model_list_raw)
             for model_name in model_list_raw:
                 if model_name[-3:] == 'pth' and int(model_name[5:-4]) <= self.end_iter:
                     model_list.append(model_name)
