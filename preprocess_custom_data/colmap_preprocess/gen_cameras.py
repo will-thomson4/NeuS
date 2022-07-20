@@ -77,7 +77,12 @@ if __name__ == '__main__':
         
         #Original
         #cv.imwrite(os.path.join(out_dir, 'mask', '{:0>3d}.png'.format(i)), np.ones_like(img) * 255)
-        cv.imwrite(os.path.join(out_dir, 'mask', '{:0>3d}.png'.format(i)), img)
+    
+    mask_list = glob(os.path.join(work_dir, 'mask/*.png'))
+    mask_list.sort()
+    for i, mask_path in enumerate(mask_list):
+        mask = cv.imread(mask_path)
+        cv.imwrite(os.path.join(out_dir, 'mask', '{:0>3d}.png'.format(i)), mask)
 
     np.savez(os.path.join(out_dir, 'cameras_sphere.npz'), **cam_dict)
     print('Process done!')
