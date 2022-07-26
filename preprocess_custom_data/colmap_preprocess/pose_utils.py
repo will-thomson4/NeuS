@@ -450,6 +450,7 @@ def load_colmap_data(realdir):
 
 
 def save_poses(basedir, poses, pts3d, perm):
+    print(pts3d)
     pts_arr = []
     vis_arr = []
     for k in pts3d:
