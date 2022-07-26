@@ -113,6 +113,7 @@ class Dataset:
         """
         Generate random rays at world space from one camera.
         """
+        print(len(self.masks), img_idx)
         pixels_x = torch.randint(low=0, high=self.W, size=[batch_size])
         pixels_y = torch.randint(low=0, high=self.H, size=[batch_size])
         color = self.images[img_idx][(pixels_y, pixels_x)]    # batch_size, 3
