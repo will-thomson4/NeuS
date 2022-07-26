@@ -205,7 +205,7 @@ class NeuSRenderer:
                     cos_anneal_ratio=0.0):
         batch_size, n_samples = z_vals.shape
 
-        # Section length
+    # Section length THIS WILL BE WHERE DEPTH SAMPLING HAPPENS
         dists = z_vals[..., 1:] - z_vals[..., :-1]
         dists = torch.cat([dists, torch.Tensor([sample_dist]).expand(dists[..., :1].shape)], -1)
         mid_z_vals = z_vals + dists * 0.5
@@ -286,6 +286,8 @@ class NeuSRenderer:
     def render(self, rays_o, rays_d, near, far, perturb_overwrite=-1, background_rgb=None, cos_anneal_ratio=0.0):
         batch_size = len(rays_o)
         sample_dist = 2.0 / self.n_samples   # Assuming the region of interest is a unit sphere
+
+        # Currently uniform sampling, but this can be changed to be more robust THIS WILL BE WHERE DEPTH SAMPLING HAPPENS
         z_vals = torch.linspace(0.0, 1.0, self.n_samples)
         z_vals = near + (far - near) * z_vals[None, :]
 
