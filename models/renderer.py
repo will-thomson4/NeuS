@@ -287,9 +287,14 @@ class NeuSRenderer:
         batch_size = len(rays_o)
         sample_dist = 2.0 / self.n_samples   # Assuming the region of interest is a unit sphere
 
-        # Currently uniform sampling, but this can be changed to be more robust THIS WILL BE WHERE DEPTH SAMPLING HAPPENS
+        # Depth implementation
+        # Get a list of n values between 0 and 1
         z_vals = torch.linspace(0.0, 1.0, self.n_samples)
+        # Sample z values between near and far with these uniform samples
         z_vals = near + (far - near) * z_vals[None, :]
+        # Now we need to trim z_vals to be within the specified depth range
+        print("z_vals:", z_vals)
+
 
         z_vals_outside = None
         if self.n_outside > 0:
