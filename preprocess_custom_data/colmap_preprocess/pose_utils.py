@@ -452,7 +452,7 @@ def load_colmap_data(realdir):
 def save_poses(basedir, poses, pts3d, perm):
     pts_arr = []
     vis_arr = []
-    print(poses)
+    
     for k in pts3d:
         pts_arr.append(pts3d[k].xyz)
         cams = [0] * poses.shape[-1]
