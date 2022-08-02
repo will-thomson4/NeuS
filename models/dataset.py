@@ -124,6 +124,7 @@ class Dataset:
         color = self.images[img_idx][(pixels_y, pixels_x)]
 
         depth = self.depth_images[img_idx][(pixels_y, pixels_x)]
+        print("pixels: ", (pixels_x, pixels_y))
         print("depth: ", depth)
         
             # batch_size, 3

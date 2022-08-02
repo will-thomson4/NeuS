@@ -205,7 +205,8 @@ class NeuSRenderer:
                     cos_anneal_ratio=0.0):
         batch_size, n_samples = z_vals.shape
 
-    # Section length THIS WILL BE WHERE DEPTH SAMPLING HAPPENS
+        # Section length (THIS WILL BE WHERE DEPTH SAMPLING HAPPENS ONCE Z_VALS ARE SAMPLED)
+        # ----------------------------------------------------------------------------------------------------------
         dists = z_vals[..., 1:] - z_vals[..., :-1]
         dists = torch.cat([dists, torch.Tensor([sample_dist]).expand(dists[..., :1].shape)], -1)
         mid_z_vals = z_vals + dists * 0.5
