@@ -107,7 +107,8 @@ class Runner:
 
             rays_o, rays_d, true_rgb, mask = data[:, :3], data[:, 3: 6], data[:, 6: 9], data[:, 9: 10]
             near, far = self.dataset.near_far_from_sphere(rays_o, rays_d)
-
+            print("near: ", near)
+            print("far: ", far)
             background_rgb = None
             if self.use_white_bkgd:
                 background_rgb = torch.ones([1, 3])

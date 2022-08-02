@@ -205,8 +205,6 @@ class NeuSRenderer:
                     cos_anneal_ratio=0.0):
         batch_size, n_samples = z_vals.shape
 
-        # Section length (THIS WILL BE WHERE DEPTH SAMPLING HAPPENS ONCE Z_VALS ARE SAMPLED)
-        # ----------------------------------------------------------------------------------------------------------
         dists = z_vals[..., 1:] - z_vals[..., :-1]
         dists = torch.cat([dists, torch.Tensor([sample_dist]).expand(dists[..., :1].shape)], -1)
         mid_z_vals = z_vals + dists * 0.5
@@ -293,9 +291,8 @@ class NeuSRenderer:
         z_vals = torch.linspace(0.0, 1.0, self.n_samples)
         # Sample z values between near and far with these uniform samples
         z_vals = near + (far - near) * z_vals[None, :]
-        # Now we need to trim z_vals to be within the specified depth range
-        print("z_vals:", z_vals)
-
+        # Now we need to trim z_vals to be within the specified depth range (Probably easiest to just decrease number of samples, 
+        # and try to improve estimates for near and far)
 
         z_vals_outside = None
         if self.n_outside > 0:

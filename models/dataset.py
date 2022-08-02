@@ -124,13 +124,15 @@ class Dataset:
         color = self.images[img_idx][(pixels_y, pixels_x)]
 
         depth = self.depth_images[img_idx][(pixels_y, pixels_x)]
-        print("pixels: ", (pixels_x, pixels_y))
-        print("depth: ", depth)
+        # print("pixels: ", (pixels_x, pixels_y))
+        # print("depth: ", depth)
         
             # batch_size, 3
         mask = self.masks[img_idx][(pixels_y, pixels_x)]      # batch_size, 3
+
+        # How does this ray calculation work? Not sure how to correspond the ray to the depth.
         p = torch.stack([pixels_x, pixels_y, torch.ones_like(pixels_y)], dim=-1).float()  # batch_size, 3
-        p = torch.matmul(self.intrinsics_all_inv[img_idx, None, :3, :3], p[:, :, None]).squeeze() # batch_size, 3
+        p = torch.matmul(self.intrinsics_all_inv[img_idx, None, :3, :3], p[:, :, None]).squeeze() # batch_size, 3        
         rays_v = p / torch.linalg.norm(p, ord=2, dim=-1, keepdim=True)    # batch_size, 3
         rays_v = torch.matmul(self.pose_all[img_idx, None, :3, :3], rays_v[:, :, None]).squeeze()  # batch_size, 3
         rays_o = self.pose_all[img_idx, None, :3, 3].expand(rays_v.shape) # batch_size, 3
