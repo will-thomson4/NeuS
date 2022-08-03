@@ -131,6 +131,10 @@ class Dataset:
         mask = self.masks[img_idx][(pixels_y, pixels_x)]      # batch_size, 3
 
         # How does this ray calculation work? Not sure how to correspond the ray to the depth.
+        # Pinhole camera, transformation matrix from world coordinates to fx, fy, 1
+        # Look into camera pinhole model, projection from 3d onto a plane
+
+        # p = each pixel, rays_v is normalized ray
         p = torch.stack([pixels_x, pixels_y, torch.ones_like(pixels_y)], dim=-1).float()  # batch_size, 3
         p = torch.matmul(self.intrinsics_all_inv[img_idx, None, :3, :3], p[:, :, None]).squeeze() # batch_size, 3        
         rays_v = p / torch.linalg.norm(p, ord=2, dim=-1, keepdim=True)    # batch_size, 3
@@ -174,10 +178,15 @@ class Dataset:
     def near_far_from_sphere(self, rays_o, rays_d):
         a = torch.sum(rays_d**2, dim=-1, keepdim=True)
         b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
+        
+        #b = 2 * Direction . Origin
+
         mid = 0.5 * (-b) / a
         near = mid - 1.0
         far = mid + 1.0
         return near, far
+
+        #Rays o origin, rays d is direction
 
     def image_at(self, idx, resolution_level):
         img = cv.imread(self.images_lis[idx])
