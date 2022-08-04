@@ -124,8 +124,7 @@ class Dataset:
         color = self.images[img_idx][(pixels_y, pixels_x)]
 
         depth = self.depth_images[img_idx][(pixels_y, pixels_x)]
-        # print("pixels: ", (pixels_x, pixels_y))
-        # print("depth: ", depth)
+        #Depth here should be a normalised depth value for the y, x pixel position
         
             # batch_size, 3
         mask = self.masks[img_idx][(pixels_y, pixels_x)]      # batch_size, 3
@@ -133,8 +132,8 @@ class Dataset:
         # How does this ray calculation work? Not sure how to correspond the ray to the depth.
         # Pinhole camera, transformation matrix from world coordinates to fx, fy, 1
         # Look into camera pinhole model, projection from 3d onto a plane
-
         # p = each pixel, rays_v is normalized ray
+        
         p = torch.stack([pixels_x, pixels_y, torch.ones_like(pixels_y)], dim=-1).float()  # batch_size, 3
         p = torch.matmul(self.intrinsics_all_inv[img_idx, None, :3, :3], p[:, :, None]).squeeze() # batch_size, 3        
         rays_v = p / torch.linalg.norm(p, ord=2, dim=-1, keepdim=True)    # batch_size, 3
@@ -186,7 +185,7 @@ class Dataset:
         far = mid + 1.0
         return near, far
 
-        #Rays o origin, rays d is direction
+        #Rays o is origin position, rays d is direction vector
 
     def image_at(self, idx, resolution_level):
         img = cv.imread(self.images_lis[idx])
