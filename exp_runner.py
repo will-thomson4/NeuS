@@ -103,9 +103,11 @@ class Runner:
         image_perm = self.get_image_perm()
 
         for iter_i in tqdm(range(res_step)):
+            #Need to also get back depth from this function
             data = self.dataset.gen_random_rays_at(image_perm[self.iter_step % len(image_perm)], self.batch_size)
-
             rays_o, rays_d, true_rgb, mask = data[:, :3], data[:, 3: 6], data[:, 6: 9], data[:, 9: 10]
+            
+            #Pass depth into near_far_from_sphere
             near, far = self.dataset.near_far_from_sphere(rays_o, rays_d)
             
             background_rgb = None
