@@ -349,8 +349,8 @@ class Runner:
         sdf, features = data[:, :1], data[:, 1:]
 
         #Compute the normal, i.e the gradient of the sdf
-        normal = torch.nn.functional.grad(sdf, vertices, create_graph=True)[0]
-
+        normal = self.sdf_network.gradient(vertices_tensor)
+        
         #Choose a random viewing direction from the camera matrices
         view_dir = self.dataset.pose_all[0, :3, 2][None]
 
