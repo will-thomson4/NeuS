@@ -340,6 +340,21 @@ class Runner:
             vertices = vertices * self.dataset.scale_mats_np[0][0, 0] + self.dataset.scale_mats_np[0][:3, 3][None]
 
         mesh = trimesh.Trimesh(vertices, triangles)
+
+        #Add colors to the mesh
+        #Query sdf network for each vertex and get the sdf value and feature vector as output
+        data = self.sdf_network.forward(vertices)
+        sdf, features = data[:, :1], data[:, 1:]
+
+        #Compute the normal, i.e the gradient of the sdf
+        normal = torch.nn.functional.grad(sdf, vertices, create_graph=True)[0]
+
+        #Choose a random viewing direction from the camera matrices
+        view_dir = self.dataset.pose_all[0, :3, 2][None]
+
+        color = self.render_network.forward(features, view_dir, normal)
+        print("Color", color.shape)
+
         mesh.export(os.path.join(self.base_exp_dir, 'meshes', '{:0>8d}.ply'.format(self.iter_step)))
 
         logging.info('End')
