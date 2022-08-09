@@ -345,11 +345,11 @@ class Runner:
         #Query sdf network for each vertex and get the sdf value and feature vector as output
         #Turn vertices into a tensor
         vertices_tensor = torch.tensor(vertices, dtype=torch.float32)
-        data = self.sdf_network.forward(vertices_tensor)
+        data = self.sdf_network.forward(vertices_tensor[0])
         sdf, features = data[:, :1], data[:, 1:]
 
         #Compute the normal, i.e the gradient of the sdf
-        normal = self.sdf_network.gradient(vertices_tensor)
+        normal = self.sdf_network.gradient(vertices_tensor[0])
         
         #Choose a random viewing direction from the camera matrices
         view_dir = self.dataset.pose_all[0, :3, 2][None]
