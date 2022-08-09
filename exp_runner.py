@@ -343,7 +343,9 @@ class Runner:
 
         #Add colors to the mesh
         #Query sdf network for each vertex and get the sdf value and feature vector as output
-        data = self.sdf_network.forward(vertices)
+        #Turn vertices into a tensor
+        vertices_tensor = torch.tensor(vertices, dtype=torch.float32)
+        data = self.sdf_network.forward(vertices_tensor)
         sdf, features = data[:, :1], data[:, 1:]
 
         #Compute the normal, i.e the gradient of the sdf
