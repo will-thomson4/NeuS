@@ -79,7 +79,8 @@ class Dataset:
 
         self.images = torch.from_numpy(self.images_np.astype(np.float32)).cpu()  # [n_images, H, W, 3]
         self.masks  = torch.from_numpy(self.masks_np.astype(np.float32)).cpu()   # [n_images, H, W, 3]
-
+        
+        #Grab the depth images
         self.depth_images = torch.from_numpy(self.depths_np.astype(np.float32)).cpu() 
 
         self.intrinsics_all = torch.stack(self.intrinsics_all).to(self.device)   # [n_images, 4, 4]
@@ -125,7 +126,9 @@ class Dataset:
 
         depth = self.depth_images[img_idx][(pixels_y, pixels_x)]
         #Depth here should be a normalised depth value for the y, x pixel position
-        
+        #Bigger that depth is, the closer point is to camera
+
+
         mask = self.masks[img_idx][(pixels_y, pixels_x)]    # batch_size, 3
 
         # How does this ray calculation work? Not sure how to correspond the ray to the depth.
@@ -143,7 +146,7 @@ class Dataset:
         #Rays o is the origin of the ray, rays_v is the direction of the ray
         rays_o = self.pose_all[img_idx, None, :3, 3].expand(rays_v.shape) # batch_size, 3
 
-        return torch.cat([rays_o.cpu(), rays_v.cpu(), color, mask[:, :1]], dim=-1).cuda()    # batch_size, 10
+        return torch.cat([rays_o.cpu(), rays_v.cpu(), color, mask[:, :1]], depth, dim=-1).cuda()    # batch_size, 10
 
 
     def gen_rays_between(self, idx_0, idx_1, ratio, resolution_level=1):
@@ -179,7 +182,7 @@ class Dataset:
         rays_o = trans[None, None, :3].expand(rays_v.shape)  # W, H, 3
         return rays_o.transpose(0, 1), rays_v.transpose(0, 1)
 
-    def near_far_from_sphere(self, rays_o, rays_d):
+    def near_far_from_sphere(self, rays_o, rays_d, depth = None):
         #rays_o is origin of the ray, rays_d is the direction of the ray
         
         #Summing the direction squared 
@@ -189,12 +192,19 @@ class Dataset:
         b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
         
         #Creating a sphere of radius 1 and mid is middle of sphere, near is -1 and far is +1
+
+        #What we want here is to try and alter 'mid' with some relation to our depth image
+        #Maybe just mid * 1/depth?
         mid = 0.5 * (-b) / a
+
+        if depth:
+            mid = mid * 1/depth
+
         near = mid - 1.0
         far = mid + 1.0
 
-        #What we want here is to try and alter 'mid' with some relation to our depth image
-
+        print("Near: ", near)
+        print("Far: ", far)
         return near, far
 
 
