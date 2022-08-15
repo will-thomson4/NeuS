@@ -146,7 +146,7 @@ class Dataset:
         #Rays o is the origin of the ray, rays_v is the direction of the ray
         rays_o = self.pose_all[img_idx, None, :3, 3].expand(rays_v.shape) # batch_size, 3
 
-        return torch.cat([rays_o.cpu(), rays_v.cpu(), color, mask[:, :1]], depth, dim=-1).cuda()    # batch_size, 10
+        return torch.cat([rays_o.cpu(), rays_v.cpu(), color, mask[:, :1], depth], dim=-1).cuda()    # batch_size, 10
 
 
     def gen_rays_between(self, idx_0, idx_1, ratio, resolution_level=1):
