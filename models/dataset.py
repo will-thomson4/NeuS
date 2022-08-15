@@ -191,10 +191,11 @@ class Dataset:
         #Product of origin and direction multiplied by two (with dimension -1? why?)
         b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
         
-        #Use depth as mid
-        mid = torch.sum(depth, dim=-1, keepdim=True)
 
-        #mid = 0.5 * (-b) / a
+        mid = 0.5 * (-b) / a
+        #Use depth as mid
+        if depth is not None:
+            mid = torch.sum(depth, dim=-1, keepdim=True)
 
         #Try using depth as the midpoint
 
