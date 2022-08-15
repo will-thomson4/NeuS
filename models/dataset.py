@@ -197,9 +197,9 @@ class Dataset:
         #Maybe just mid * 1/depth?
         mid = 0.5 * (-b) / a
 
-        # if depth != None:
-        #     mid = mid * 1/depth
-        print(rays_d.shape, rays_d.shape)
+        if depth != None:
+            d = torch.sum(depth, dim=-1, keepdim=True)
+            mid = mid * 1/d
 
         near = mid - 1.0
         far = mid + 1.0
