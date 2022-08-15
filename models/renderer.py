@@ -209,7 +209,7 @@ class NeuSRenderer:
         dists = torch.cat([dists, torch.Tensor([sample_dist]).expand(dists[..., :1].shape)], -1)
         mid_z_vals = z_vals + dists * 0.5
 
-        # Section midpoints
+        # Section midpoints USE THIS FOR COLOUR
         pts = rays_o[:, None, :] + rays_d[:, None, :] * mid_z_vals[..., :, None]  # n_rays, n_samples, 3
         dirs = rays_d[:, None, :].expand(pts.shape)
 

@@ -96,6 +96,28 @@ class Runner:
         if self.mode[:5] == 'train':
             self.file_backup()
 
+    # # Depth error loss
+    # def compute_depth_loss(depth_map, z_vals, weights, target_depth, target_valid_depth):
+
+    #     # Is depth map just a depth image??        
+    #     predicted_mean = depth_map[target_valid_depth]
+    #     predicted_variance = ((z_vals[target_valid_depth] - predicted_mean.unsqueeze(-1)).pow(2) * weights[target_valid_depth]).sum(-1) + 1e-5
+
+    #     target_mean = target_depth[..., 0][target_valid_depth]
+    #     target_std = target_depth[..., 1][target_valid_depth]
+        
+    #     apply_depth_loss = is_not_in_expected_distribution(predicted_mean, predicted_variance, target_mean, target_std)
+        
+    #     predicted_mean = predicted_mean[apply_depth_loss]
+        
+    #     predicted_variance = predicted_variance[apply_depth_loss]
+    #     target_mean = target_mean[apply_depth_loss]
+    #     target_std = target_std[apply_depth_loss]
+
+    #     f = nn.GaussianNLLLoss(eps=0.001)
+    #     return float(predicted_mean.shape[0]) / float(target_valid_depth.shape[0]) * f(predicted_mean, target_mean, predicted_variance)
+        
+
     def train(self):
         self.writer = SummaryWriter(log_dir=os.path.join(self.base_exp_dir, 'logs'))
         self.update_learning_rate()
@@ -107,7 +129,6 @@ class Runner:
             data = self.dataset.gen_random_rays_at(image_perm[self.iter_step % len(image_perm)], self.batch_size)
             rays_o, rays_d, true_rgb, mask, depth = data[:, :3], data[:, 3: 6], data[:, 6: 9], data[:, 9: 10], data[:, 10:]
             
-            print("Depth: ", depth)
             #Pass depth into near_far_from_sphere
             near, far = self.dataset.near_far_from_sphere(rays_o, rays_d, depth)
             
@@ -131,6 +152,25 @@ class Runner:
             gradient_error = render_out['gradient_error']
             weight_max = render_out['weight_max']
             weight_sum = render_out['weight_sum']
+
+            # # Depth map is calculated by multiplying the weights by the z_vals
+            # predicted_depths = torch.sum(render_out['weights'] * render_out['z_vals'], -1)
+            # #Get the image coordinates
+            # coords = torch.stack(torch.meshgrid(torch.linspace(0, H-1, H), torch.linspace(0, W-1, W), indexing='ij'), -1)
+
+            # #Randomly select a point in the images
+            # select_coords = coords[torch.randperm(coords.shape[0])[:self.batch_size]]
+
+            # rays_o = rays_o[select_coords[:, 0], select_coords[:, 1]]  # (N_rand, 3)
+            # rays_d = rays_d[select_coords[:, 0], select_coords[:, 1]]  # (N_rand, 3)
+            # target_s = target[select_coords[:, 0], select_coords[:, 1]]  # (N_rand, 3)
+            # target_d = target_depth[select_coords[:, 0], select_coords[:, 1]]  # (N_rand, 1) or (N_rand, 2)
+            # target_vd = target_valid_depth[select_coords[:, 0], select_coords[:, 1]]
+            # batch_rays = torch.stack([rays_o, rays_d], 0)
+
+            # # Depth map is the predicted depth, depth
+            # depth_loss = compute_depth_loss(predicted_depths, render_out['z_vals'], render_out['weights'], true_depth)
+
 
             # Loss
             color_error = (color_fine - true_rgb) * mask
@@ -337,26 +377,14 @@ class Runner:
             self.renderer.extract_geometry(bound_min, bound_max, resolution=resolution, threshold=threshold)
         os.makedirs(os.path.join(self.base_exp_dir, 'meshes'), exist_ok=True)
 
+        #Query the vertices before world space transformation when doing colour reconstruction.
+
         if world_space:
             vertices = vertices * self.dataset.scale_mats_np[0][0, 0] + self.dataset.scale_mats_np[0][:3, 3][None]
 
         mesh = trimesh.Trimesh(vertices, triangles)
 
-        # #Add colors to the mesh
-        # #Query sdf network for each vertex and get the sdf value and feature vector as output
-        # #Turn vertices into a tensor
-        # vertices_tensor = torch.tensor(vertices, dtype=torch.float32)
-        # data = self.sdf_network.forward(vertices_tensor[0])
-        # sdf, features = data[:, :1], data[:, 1:]
-
-        # #Compute the normal, i.e the gradient of the sdf
-        # normal = self.sdf_network.gradient(vertices_tensor[0])
         
-        # #Choose a random viewing direction from the camera matrices
-        # view_dir = self.dataset.pose_all[0, :3, 2][None]
-
-        # color = self.render_network.forward(features, view_dir, normal)
-        # print("Color", color.shape)
 
         mesh.export(os.path.join(self.base_exp_dir, 'meshes', '{:0>8d}.ply'.format(self.iter_step)))
 

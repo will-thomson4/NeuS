@@ -191,15 +191,12 @@ class Dataset:
         #Product of origin and direction multiplied by two (with dimension -1? why?)
         b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
         
-        #Creating a sphere of radius 1 and mid is middle of sphere, near is -1 and far is +1
+        #Use depth as mid
+        mid = torch.sum(depth, dim=-1, keepdim=True)
 
-        #What we want here is to try and alter 'mid' with some relation to our depth image
-        #Maybe just mid * 1/depth?
-        mid = 0.5 * (-b) / a
+        #mid = 0.5 * (-b) / a
 
-        # if depth != None:
-        #     d = torch.sum(depth, dim=-1, keepdim=True)
-        #     mid = mid * 1/d
+        #Try using depth as the midpoint
 
         near = mid - 1.0
         far = mid + 1.0
