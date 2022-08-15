@@ -199,6 +199,8 @@ class Dataset:
 
         # if depth != None:
         #     mid = mid * 1/depth
+        e = 1/depth
+        print(e.shape)
 
         near = mid - 1.0
         far = mid + 1.0
