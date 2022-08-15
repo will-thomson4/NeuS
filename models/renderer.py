@@ -290,7 +290,7 @@ class NeuSRenderer:
         # I assume that near and far here will be a np array of near and far values for each ray, so we need the correponding depths for each ray
         # and then if depth is bigger (closer) we can reduce the far value and if depth is smaller (further) we can reduce the near value? And then do less 
         # samples?
-
+        print(near.shape, far.shape)
         z_vals = torch.linspace(0.0, 1.0, self.n_samples)
         # Sample z values between near and far with these uniform samples
         z_vals = near + (far - near) * z_vals[None, :]
