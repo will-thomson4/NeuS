@@ -197,7 +197,7 @@ class Dataset:
         #Maybe just mid * 1/depth?
         mid = 0.5 * (-b) / a
 
-        if depth:
+        if depth != None:
             mid = mid * 1/depth
 
         near = mid - 1.0
