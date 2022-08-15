@@ -193,9 +193,11 @@ class Dataset:
         
 
         mid = 0.5 * (-b) / a
+        print("Original mid", mid)
         #Use depth as mid
         if depth is not None:
             mid = torch.sum(depth, dim=-1, keepdim=True)
+            print("Depth mid", mid)
 
         #Try using depth as the midpoint
 

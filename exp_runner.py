@@ -153,24 +153,6 @@ class Runner:
             weight_max = render_out['weight_max']
             weight_sum = render_out['weight_sum']
 
-            # # Depth map is calculated by multiplying the weights by the z_vals
-            # predicted_depths = torch.sum(render_out['weights'] * render_out['z_vals'], -1)
-            # #Get the image coordinates
-            # coords = torch.stack(torch.meshgrid(torch.linspace(0, H-1, H), torch.linspace(0, W-1, W), indexing='ij'), -1)
-
-            # #Randomly select a point in the images
-            # select_coords = coords[torch.randperm(coords.shape[0])[:self.batch_size]]
-
-            # rays_o = rays_o[select_coords[:, 0], select_coords[:, 1]]  # (N_rand, 3)
-            # rays_d = rays_d[select_coords[:, 0], select_coords[:, 1]]  # (N_rand, 3)
-            # target_s = target[select_coords[:, 0], select_coords[:, 1]]  # (N_rand, 3)
-            # target_d = target_depth[select_coords[:, 0], select_coords[:, 1]]  # (N_rand, 1) or (N_rand, 2)
-            # target_vd = target_valid_depth[select_coords[:, 0], select_coords[:, 1]]
-            # batch_rays = torch.stack([rays_o, rays_d], 0)
-
-            # # Depth map is the predicted depth, depth
-            # depth_loss = compute_depth_loss(predicted_depths, render_out['z_vals'], render_out['weights'], true_depth)
-
 
             # Loss
             color_error = (color_fine - true_rgb) * mask
