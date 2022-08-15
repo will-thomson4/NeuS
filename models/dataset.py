@@ -203,8 +203,6 @@ class Dataset:
         near = mid - 1.0
         far = mid + 1.0
 
-        print("Near: ", near)
-        print("Far: ", far)
         return near, far
 
 
