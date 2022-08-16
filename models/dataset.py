@@ -207,6 +207,7 @@ class Dataset:
             #save the plot to a file
             print("Saving plot to file")
             plt.savefig("depth.png")
+            plt.clf()
 
         #Try using depth as the midpoint
 
