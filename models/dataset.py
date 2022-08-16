@@ -197,7 +197,7 @@ class Dataset:
         #print("Original mid", mid)
         #Use depth as mid
         if depth is not None:
-            mid = torch.sum(depth, dim=-1, keepdim=True)
+            depth = torch.sum(depth, dim=-1, keepdim=True)
             #print("Depth mid", mid)
 
             #Save a plot of mid data
