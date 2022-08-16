@@ -1,3 +1,4 @@
+from asyncio.tasks import _T1
 import torch
 import torch.nn.functional as F
 import cv2 as cv
@@ -199,6 +200,13 @@ class Dataset:
         if depth is not None:
             depth = torch.sum(depth, dim=-1, keepdim=True)
             #print("Depth mid", mid)
+            
+            mean = torch.mean(depth)
+            std = torch.std(depth)
+
+            depth = (depth-mean)/std
+
+            depth = depth * 0.5 + 1.5
 
             #Save a plot of mid data
             plt.plot(mid.cpu().numpy()[:50,0])
