@@ -205,7 +205,7 @@ class Dataset:
 
             depth = (depth-mean)/std
 
-            depth = depth * 0.5 + 1.5
+            depth = depth * 0.1 + 1.5
 
             #Save a plot of mid data
             plt.plot(mid.cpu().numpy()[:50,0])
