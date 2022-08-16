@@ -201,12 +201,12 @@ class Dataset:
             #print("Depth mid", mid)
 
             #Save a plot of mid data
-            plt.plot(mid.cpu().numpy()[:,0])
+            plt.plot(mid.cpu().numpy()[:50,0])
             #save a plot of depth data
-            plt.plot(depth.cpu().numpy()[:,0])
+            plt.plot(depth.cpu().numpy()[:50,0])
             #save the plot to a file
             print("Saving plot to file")
-            plt.savefig("depth.png")
+            plt.savefig("depth1.png")
             plt.clf()
 
         #Try using depth as the midpoint
