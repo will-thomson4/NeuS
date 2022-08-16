@@ -194,18 +194,20 @@ class Dataset:
         
 
         mid = 0.5 * (-b) / a
-        print("Original mid", mid)
+        #print("Original mid", mid)
         #Use depth as mid
         if depth is not None:
             mid = torch.sum(depth, dim=-1, keepdim=True)
-            print("Depth mid", mid)
+            #print("Depth mid", mid)
 
             #Save a plot of mid data
             plt.plot(mid.cpu().numpy())
             #save a plot of depth data
             plt.plot(depth.cpu().numpy())
             #save the plot to a file
-            plt.savefig("depth.png")
+            os.makedirs(os.path.join(self.base_exp_dir, 'plots'), exist_ok=True)
+            print("Saving plot to file")
+            plt.savefig("plots/depth.png")
 
         #Try using depth as the midpoint
 
