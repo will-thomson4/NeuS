@@ -216,8 +216,8 @@ class Dataset:
 
         #Try using depth as the midpoint
 
-        near = mid - 0.5
-        far = mid + 0.5
+        near = mid - 1
+        far = mid + 1
 
         return near, far
 
