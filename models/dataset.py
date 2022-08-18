@@ -212,6 +212,8 @@ class Dataset:
             # plt.savefig("depth2.png")
             # plt.clf()
 
+            mid = depth
+
         #Try using depth as the midpoint
 
         near = mid - 0.5
