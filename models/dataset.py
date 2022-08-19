@@ -126,18 +126,9 @@ class Dataset:
         color = self.images[img_idx][(pixels_y, pixels_x)] # batch_size, 3
 
         depth = self.depth_images[img_idx][(pixels_y, pixels_x)]
-        #Depth here should be a normalised depth value for the y, x pixel position
-        #Bigger that depth is, the closer point is to camera
-
 
         mask = self.masks[img_idx][(pixels_y, pixels_x)]    # batch_size, 3
-
-        # How does this ray calculation work? Not sure how to correspond the ray to the depth.
-        # Pinhole camera, transformation matrix from world coordinates to fx, fy, 1
-        # Look into camera pinhole model, projection from 3d onto a plane
-        # p = each pixel, rays_v is normalized ray
         
-
         p = torch.stack([pixels_x, pixels_y, torch.ones_like(pixels_y)], dim=-1).float()  # batch_size, 3
         p = torch.matmul(self.intrinsics_all_inv[img_idx, None, :3, :3], p[:, :, None]).squeeze() # batch_size, 3  
 
@@ -196,25 +187,23 @@ class Dataset:
         mid = 0.5 * (-b) / a
 
         #Use depth as mid
-        if depth is not None:
-            depth = torch.sum(depth, dim=-1, keepdim=True)            
-            mean = torch.mean(depth)
-            std = torch.std(depth)
-            depth = (depth-mean)/std
-            depth = depth * 0.17 + 1.75
+        # if depth is not None:
+        #     depth = torch.sum(depth, dim=-1, keepdim=True)            
+        #     mean = torch.mean(depth)
+        #     std = torch.std(depth)
+        #     depth = (depth-mean)/std
+        #     depth = depth * 0.17 + 1.75
 
-            # #Save a plot of mid data
-            # plt.plot(mid.cpu().numpy()[:50,0])
-            # #save a plot of depth data
-            # plt.plot(depth.cpu().numpy()[:50,0])
-            # #save the plot to a file
-            # print("Saving plot to file")
-            # plt.savefig("depth2.png")
-            # plt.clf()
+        #     # #Save a plot of mid data
+        #     # plt.plot(mid.cpu().numpy()[:50,0])
+        #     # #save a plot of depth data
+        #     # plt.plot(depth.cpu().numpy()[:50,0])
+        #     # #save the plot to a file
+        #     # print("Saving plot to file")
+        #     # plt.savefig("depth2.png")
+        #     # plt.clf()
 
-            mid = depth
-
-        #Try using depth as the midpoint
+        #     mid = depth
 
         near = mid - 1
         far = mid + 1
