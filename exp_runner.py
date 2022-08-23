@@ -16,6 +16,8 @@ from models.dataset import Dataset
 from models.fields import RenderingNetwork, SDFNetwork, SingleVarianceNetwork, NeRF
 from models.renderer import NeuSRenderer
 
+import matplotlib.pyplot as plt
+
 
 class Runner:
     def __init__(self, conf_path, mode='train', case='CASE_NAME', is_continue=False):
@@ -124,6 +126,10 @@ class Runner:
         res_step = self.end_iter - self.iter_step
         image_perm = self.get_image_perm()
 
+        #For saving loss
+        loss_array = []
+        iter_array = []
+
         for iter_i in tqdm(range(res_step)):
             #Need to also get back depth from this function
             data = self.dataset.gen_random_rays_at(image_perm[self.iter_step % len(image_perm)], self.batch_size)
@@ -184,6 +190,8 @@ class Runner:
             if self.iter_step % self.report_freq == 0:
                 print(self.base_exp_dir)
                 print('iter:{:8>d} loss = {} lr={}'.format(self.iter_step, loss, self.optimizer.param_groups[0]['lr']))
+                loss_array.append(loss)
+                iter_array.append(self.iter_step)
 
             if self.iter_step % self.save_freq == 0:
                 self.save_checkpoint()
@@ -198,6 +206,16 @@ class Runner:
 
             if self.iter_step % len(image_perm) == 0:
                 image_perm = self.get_image_perm()
+        
+        #Plot loss
+        plt.plot(iter_array, loss_array)
+        plt.xlabel('Iteration')
+        plt.ylabel('Loss')
+        plt.title('Training Loss')
+        print("Saving plot to file")
+        plt.savefig("trainingLoss.png")
+        plt.clf()
+
 
     def get_image_perm(self):
         return torch.randperm(self.dataset.n_images)

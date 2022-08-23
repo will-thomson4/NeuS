@@ -174,13 +174,12 @@ class Dataset:
         rays_o = trans[None, None, :3].expand(rays_v.shape)  # W, H, 3
         return rays_o.transpose(0, 1), rays_v.transpose(0, 1)
 
+    #This function is edited in this MSc project inform ray sampling
     def near_far_from_sphere(self, rays_o, rays_d, depth = None):
         #rays_o is origin of the ray, rays_d is the direction of the ray
         
         #Summing the direction squared 
         a = torch.sum(rays_d**2, dim=-1, keepdim=True)
-
-        #Product of origin and direction multiplied by two (with dimension -1? why?)
         b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
         
 
