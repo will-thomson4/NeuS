@@ -198,17 +198,18 @@ class Dataset:
             std = torch.std(depth)
             depth = (depth-mean)/std
             depth = depth * 0.17 + 1.75
+            depth = depth.to(device='cuda')
 
             #depth = depth * (torch.max(mid) - torch.min(mid)) + torch.min(mid)
 
-            # #Save a plot of mid data
-            # plt.plot(mid.cpu().numpy()[:50,0])
-            # #save a plot of depth data
-            # plt.plot(depth.cpu().numpy()[:50,0])
-            # #save the plot to a file
-            # print("Saving plot to file")
-            # plt.savefig("depth2.png")
-            # plt.clf()
+            #Save a plot of mid data
+            plt.plot(mid.cpu().numpy()[:50,0])
+            #save a plot of depth data
+            plt.plot(depth.cpu().numpy()[:50,0])
+            #save the plot to a file
+            print("Saving plot to file")
+            plt.savefig("depth2.png")
+            plt.clf()
 
             mid = depth
 
