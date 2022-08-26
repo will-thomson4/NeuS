@@ -197,8 +197,8 @@ class Dataset:
             mean = torch.mean(depth)
             std = torch.std(depth)
             depth = (depth-mean)/std
-            depth = depth * 0.17 + 1.75
-            depth = depth.to(device='cuda')
+            #depth = depth * 0.17 + 1.75
+            # depth = depth.to(device='cuda')
 
             #depth = depth * (torch.max(mid) - torch.min(mid)) + torch.min(mid)
 
