@@ -194,13 +194,15 @@ class Dataset:
         #Use depth as mid
         if depth is not None:
             depth = torch.sum(depth, dim=-1, keepdim=True)            
-            mean = torch.mean(depth)
-            std = torch.std(depth)
-            depth = (depth-mean)/std
+            # mean = torch.mean(depth)
+            # std = torch.std(depth)
+            #depth = (depth-mean)/std
             #depth = depth * 0.17 + 1.75
-            # depth = depth.to(device='cuda')
-
+            #depth = depth.to(device='cuda')
             #depth = depth * (torch.max(mid) - torch.min(mid)) + torch.min(mid)
+
+            print("Depth size", depth.size())
+            print("Mid size", mid.size())
 
             #Save a plot of mid data
             plt.plot(mid.cpu().numpy())
