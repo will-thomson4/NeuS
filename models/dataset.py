@@ -203,9 +203,9 @@ class Dataset:
             #depth = depth * (torch.max(mid) - torch.min(mid)) + torch.min(mid)
 
             #Save a plot of mid data
-            plt.plot(mid.cpu().numpy()[:100,0])
+            plt.plot(mid.cpu().numpy())
             #save a plot of depth data
-            plt.plot(depth.cpu().numpy()[:100,0])
+            plt.plot(depth.cpu().numpy())
             #save the plot to a file
             print("Saving plot to file")
             plt.savefig("depth2.png")
