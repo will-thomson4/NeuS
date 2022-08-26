@@ -116,7 +116,7 @@ class Runner:
             
             #Pass depth into near_far_from_sphere
             near, far = self.dataset.near_far_from_sphere(rays_o, rays_d, depth)
-            
+            print("Just got near far from sphere")
             background_rgb = None
             if self.use_white_bkgd:
                 background_rgb = torch.ones([1, 3])
