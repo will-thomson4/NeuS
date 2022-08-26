@@ -190,7 +190,6 @@ class Dataset:
         
 
         mid = 0.5 * (-b) / a
-        print("test")
         #Use depth as mid
         if depth is not None:
             depth = torch.sum(depth, dim=-1, keepdim=True)            
@@ -203,6 +202,10 @@ class Dataset:
 
             print("Depth size", depth.size())
             print("Mid size", mid.size())
+
+            f = open("myfile.txt", "x")
+            f.write("Depth size" + str(depth.size()) + " | " + "Mid size" + str(mid.size()))
+            f.close()
 
             # #Save a plot of mid data
             # plt.plot(mid.cpu().numpy())
