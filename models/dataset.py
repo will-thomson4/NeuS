@@ -111,9 +111,9 @@ class Dataset:
         ty = torch.linspace(0, self.H - 1, self.H // l)
         pixels_x, pixels_y = torch.meshgrid(tx, ty)
 
-        print("Rays at pixels x:", torch.round(pixels_x))
-        print("Rays at pixels y:", torch.round(pixels_y))
-        depth = self.depth_images[img_idx][(pixels_y, pixels_x)]
+        # print("Rays at pixels x:", torch.round(pixels_x))
+        # print("Rays at pixels y:", torch.round(pixels_y))
+        depth = self.depth_images[img_idx][(pixels_y.long(), pixels_x.long())]
 
         p = torch.stack([pixels_x, pixels_y, torch.ones_like(pixels_y)], dim=-1) # W, H, 3
         p = torch.matmul(self.intrinsics_all_inv[img_idx, None, None, :3, :3], p[:, :, :, None]).squeeze()  # W, H, 3
@@ -130,7 +130,7 @@ class Dataset:
         pixels_y = torch.randint(low=0, high=self.H, size=[batch_size])
         color = self.images[img_idx][(pixels_y, pixels_x)] # batch_size, 3
 
-        print("Random rays at pixels:", pixels_x, pixels_y)
+        #print("Random rays at pixels:", pixels_x, pixels_y)
         depth = self.depth_images[img_idx][(pixels_y, pixels_x)]
 
         mask = self.masks[img_idx][(pixels_y, pixels_x)]    # batch_size, 3
