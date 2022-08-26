@@ -204,14 +204,14 @@ class Dataset:
             print("Depth size", depth.size())
             print("Mid size", mid.size())
 
-            #Save a plot of mid data
-            plt.plot(mid.cpu().numpy())
-            #save a plot of depth data
-            plt.plot(depth.cpu().numpy())
-            #save the plot to a file
-            print("Saving plot to file")
-            plt.savefig("depth2.png")
-            plt.clf()
+            # #Save a plot of mid data
+            # plt.plot(mid.cpu().numpy())
+            # #save a plot of depth data
+            # plt.plot(depth.cpu().numpy())
+            # #save the plot to a file
+            # print("Saving plot to file")
+            # plt.savefig("depth2.png")
+            # plt.clf()
 
             mid = depth
 
