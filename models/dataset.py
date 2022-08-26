@@ -192,7 +192,7 @@ class Dataset:
         mid = 0.5 * (-b) / a
 
         f = open("myfile.txt", "x")
-        f.write("why aren't you working")
+        f.write(str(depth.size()))
         f.close()
 
         #Use depth as mid
