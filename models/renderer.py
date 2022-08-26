@@ -293,7 +293,11 @@ class NeuSRenderer:
         #print(near.shape, far.shape)
         z_vals = torch.linspace(0.0, 1.0, self.n_samples)
         # Sample z values between near and far with these uniform samples
-  
+
+        print("z_vals device", z_vals.device)
+        print("near", near.device)
+        print("far", far.device)
+
         z_vals = near + (far - near) * z_vals[None, :]
         # Now we need to trim z_vals to be within the specified depth range (Probably easiest to just decrease number of samples, 
         # and try to improve estimates for near and far)

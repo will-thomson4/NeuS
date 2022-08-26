@@ -202,13 +202,6 @@ class Dataset:
             #depth = depth.to(device='cuda')
             #depth = depth * (torch.max(mid) - torch.min(mid)) + torch.min(mid)
 
-            print("Depth size", depth.size())
-            print("Mid size", mid.size())
-
-            f = open("myfile.txt", "x")
-            f.write("Depth size" + str(depth.size()) + " | " + "Mid size" + str(mid.size()))
-            f.close()
-
             # #Save a plot of mid data
             # plt.plot(mid.cpu().numpy())
             # #save a plot of depth data
