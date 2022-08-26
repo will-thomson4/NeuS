@@ -199,7 +199,7 @@ class Dataset:
             depth = (depth-mean)/std
             depth = depth * 0.17 + 1.75
 
-            depth = depth * (torch.max(mid) - torch.min(mid)) + torch.min(mid)
+            #depth = depth * (torch.max(mid) - torch.min(mid)) + torch.min(mid)
 
             # #Save a plot of mid data
             # plt.plot(mid.cpu().numpy()[:50,0])
