@@ -98,27 +98,6 @@ class Runner:
         if self.mode[:5] == 'train':
             self.file_backup()
 
-    # # Depth error loss
-    # def compute_depth_loss(depth_map, z_vals, weights, target_depth, target_valid_depth):
-
-    #     # Is depth map just a depth image??        
-    #     predicted_mean = depth_map[target_valid_depth]
-    #     predicted_variance = ((z_vals[target_valid_depth] - predicted_mean.unsqueeze(-1)).pow(2) * weights[target_valid_depth]).sum(-1) + 1e-5
-
-    #     target_mean = target_depth[..., 0][target_valid_depth]
-    #     target_std = target_depth[..., 1][target_valid_depth]
-        
-    #     apply_depth_loss = is_not_in_expected_distribution(predicted_mean, predicted_variance, target_mean, target_std)
-        
-    #     predicted_mean = predicted_mean[apply_depth_loss]
-        
-    #     predicted_variance = predicted_variance[apply_depth_loss]
-    #     target_mean = target_mean[apply_depth_loss]
-    #     target_std = target_std[apply_depth_loss]
-
-    #     f = nn.GaussianNLLLoss(eps=0.001)
-    #     return float(predicted_mean.shape[0]) / float(target_valid_depth.shape[0]) * f(predicted_mean, target_mean, predicted_variance)
-        
 
     def train(self):
         self.writer = SummaryWriter(log_dir=os.path.join(self.base_exp_dir, 'logs'))
@@ -282,7 +261,7 @@ class Runner:
 
         if resolution_level < 0:
             resolution_level = self.validate_resolution_level
-        rays_o, rays_d = self.dataset.gen_rays_at(idx, resolution_level=resolution_level)
+        rays_o, rays_d, depth  = self.dataset.gen_rays_at(idx, resolution_level=resolution_level)
         H, W, _ = rays_o.shape
         rays_o = rays_o.reshape(-1, 3).split(self.batch_size)
         rays_d = rays_d.reshape(-1, 3).split(self.batch_size)
@@ -291,7 +270,7 @@ class Runner:
         out_normal_fine = []
 
         for rays_o_batch, rays_d_batch in zip(rays_o, rays_d):
-            near, far = self.dataset.near_far_from_sphere(rays_o_batch, rays_d_batch)
+            near, far = self.dataset.near_far_from_sphere(rays_o_batch, rays_d_batch, depth)
             background_rgb = torch.ones([1, 3]) if self.use_white_bkgd else None
 
             render_out = self.renderer.render(rays_o_batch,

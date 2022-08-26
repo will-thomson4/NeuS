@@ -110,12 +110,15 @@ class Dataset:
         tx = torch.linspace(0, self.W - 1, self.W // l)
         ty = torch.linspace(0, self.H - 1, self.H // l)
         pixels_x, pixels_y = torch.meshgrid(tx, ty)
+
+        depth = self.depth_images[img_idx][(pixels_y, pixels_x)]
+
         p = torch.stack([pixels_x, pixels_y, torch.ones_like(pixels_y)], dim=-1) # W, H, 3
         p = torch.matmul(self.intrinsics_all_inv[img_idx, None, None, :3, :3], p[:, :, :, None]).squeeze()  # W, H, 3
         rays_v = p / torch.linalg.norm(p, ord=2, dim=-1, keepdim=True)  # W, H, 3
         rays_v = torch.matmul(self.pose_all[img_idx, None, None, :3, :3], rays_v[:, :, :, None]).squeeze()  # W, H, 3
         rays_o = self.pose_all[img_idx, None, None, :3, 3].expand(rays_v.shape)  # W, H, 3
-        return rays_o.transpose(0, 1), rays_v.transpose(0, 1)
+        return rays_o.transpose(0, 1), rays_v.transpose(0, 1), depth
 
     def gen_random_rays_at(self, img_idx, batch_size):
         """
