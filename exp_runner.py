@@ -270,7 +270,7 @@ class Runner:
         out_normal_fine = []
 
         for rays_o_batch, rays_d_batch in zip(rays_o, rays_d):
-            near, far = self.dataset.near_far_from_sphere(rays_o_batch, rays_d_batch, depth)
+            near, far = self.dataset.near_far_from_sphere(rays_o_batch, rays_d_batch)
             background_rgb = torch.ones([1, 3]) if self.use_white_bkgd else None
 
             render_out = self.renderer.render(rays_o_batch,
