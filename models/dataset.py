@@ -185,26 +185,26 @@ class Dataset:
 
         mid = 0.5 * (-b) / a
 
-        # #Use depth as mid
-        # if depth is not None:
-        #     depth = torch.sum(depth, dim=-1, keepdim=True)            
-        #     mean = torch.mean(depth)
-        #     std = torch.std(depth)
-        #     depth = (depth-mean)/std
-        #     depth = depth * 0.17 + 1.75
+        #Use depth as mid
+        if depth is not None:
+            depth = torch.sum(depth, dim=-1, keepdim=True)            
+            mean = torch.mean(depth)
+            std = torch.std(depth)
+            depth = (depth-mean)/std
+            depth = depth * 0.17 + 1.75
 
-        #     depth = depth * (torch.max(mid) - torch.min(mid)) + torch.min(mid)
+            depth = depth * (torch.max(mid) - torch.min(mid)) + torch.min(mid)
 
-        #     # #Save a plot of mid data
-        #     # plt.plot(mid.cpu().numpy()[:50,0])
-        #     # #save a plot of depth data
-        #     # plt.plot(depth.cpu().numpy()[:50,0])
-        #     # #save the plot to a file
-        #     # print("Saving plot to file")
-        #     # plt.savefig("depth2.png")
-        #     # plt.clf()
+            # #Save a plot of mid data
+            # plt.plot(mid.cpu().numpy()[:50,0])
+            # #save a plot of depth data
+            # plt.plot(depth.cpu().numpy()[:50,0])
+            # #save the plot to a file
+            # print("Saving plot to file")
+            # plt.savefig("depth2.png")
+            # plt.clf()
 
-        #     mid = depth
+            mid = depth
 
         near = mid - 0.7
         far = mid + 0.7
