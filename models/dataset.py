@@ -190,7 +190,7 @@ class Dataset:
         
 
         mid = 0.5 * (-b) / a
-
+        print("test")
         #Use depth as mid
         if depth is not None:
             depth = torch.sum(depth, dim=-1, keepdim=True)            
