@@ -196,7 +196,7 @@ class Dataset:
             #depth = depth * 0.17 + 1.75
             #depth = depth.to(device='cuda')
             #depth = depth * (torch.max(mid) - torch.min(mid)) + torch.min(mid)
-            
+
             depth = depth + 2
 
             #Save a plot of mid data
@@ -208,7 +208,10 @@ class Dataset:
             plt.savefig("depth-plot.png")
             plt.clf()
             
-            mid = depth
+            f = open("sizes.txt", "w")
+            f.write("Mid: " + str(mid.size()) + " Depth: " + depth.size())
+
+            # mid = depth
 
         near = mid - 1
         far = mid + 1
