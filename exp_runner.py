@@ -267,10 +267,6 @@ class Runner:
         # rays_d = rays_d.reshape(-1, 3).split(self.batch_size)
         # depth = depth.reshape(-1, 3).split(self.batch_size)
 
-        f = open("infoFile.txt", "w")
-        f.write("Rays d" + str(rays_d.shape) + "| Rays o: " + str(rays_o.shape) + " | Depth: " + str(depth.shape)) 
-        f.close()
-
         rays_o = rays_o.reshape(-1, 3)
         rays_d = rays_d.reshape(-1, 3)
         depth = depth.reshape(-1, 3)

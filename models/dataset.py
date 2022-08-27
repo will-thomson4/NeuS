@@ -111,9 +111,11 @@ class Dataset:
         ty = torch.linspace(0, self.H - 1, self.H // l)
         pixels_x, pixels_y = torch.meshgrid(tx, ty)
 
-        # print("Rays at pixels x:", torch.round(pixels_x))
-        # print("Rays at pixels y:", torch.round(pixels_y))
         depth = self.depth_images[img_idx][(pixels_y.long(), pixels_x.long())]
+
+        f = open("infoFile.txt", "w")
+        f.write("W: " + str(self.W) + "| H: " + str(self.H) + " | Pixels x: " + str(pixels_x.shape) + " | Pixels y: " + str(pixels_y.shape)) 
+        f.close()
 
         p = torch.stack([pixels_x, pixels_y, torch.ones_like(pixels_y)], dim=-1) # W, H, 3
         p = torch.matmul(self.intrinsics_all_inv[img_idx, None, None, :3, :3], p[:, :, :, None]).squeeze()  # W, H, 3
