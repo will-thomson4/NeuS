@@ -263,14 +263,9 @@ class Runner:
             resolution_level = self.validate_resolution_level
         rays_o, rays_d, depth  = self.dataset.gen_rays_at(idx, resolution_level=resolution_level)
         H, W, _ = rays_o.shape
-        rays_o = rays_o.reshape(-1, 3).split(self.batch_size)
-        rays_d = rays_d.reshape(-1, 3).split(self.batch_size)
-        depth = depth.reshape(-1, 3).split(self.batch_size)
 
-        out_rgb_fine = []
-        out_normal_fine = []
-
-
+        print("Rays d", rays_d)
+        print("rays o", rays_o)
         #Show depth
         a = torch.sum(rays_d**2, dim=-1, keepdim=True)
         b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
@@ -286,6 +281,12 @@ class Runner:
         plt.savefig("depth-vs-mid.png")
         plt.clf()
 
+        rays_o = rays_o.reshape(-1, 3).split(self.batch_size)
+        rays_d = rays_d.reshape(-1, 3).split(self.batch_size)
+        depth = depth.reshape(-1, 3).split(self.batch_size)
+
+        out_rgb_fine = []
+        out_normal_fine = []
 
         for rays_o_batch, rays_d_batch, depth_batch in zip(rays_o, rays_d, depth):
             near, far = self.dataset.near_far_from_sphere(rays_o_batch, rays_d_batch, depth_batch)
