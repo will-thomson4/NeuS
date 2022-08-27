@@ -203,18 +203,18 @@ class Dataset:
             #depth = depth * (torch.max(mid) - torch.min(mid)) + torch.min(mid)
 
             #Save a plot of mid data
-            plt.plot(mid.cpu().numpy())
-            #save a plot of depth data
-            plt.plot(depth.cpu().numpy())
-            #save the plot to a file
-            print("Saving plot to file")
-            plt.savefig("depth2.png")
-            plt.clf()
+            # plt.plot(mid.cpu().numpy())
+            # #save a plot of depth data
+            # plt.plot(depth.cpu().numpy())
+            # #save the plot to a file
+            # print("Saving plot to file")
+            # plt.savefig("depth2.png")
+            # plt.clf()
 
-            mid = depth
+            # mid = depth
 
-        near = mid - 0.7
-        far = mid + 0.7
+        near = mid - 1
+        far = mid + 1
 
         near = near.to(device='cuda')
         far = far.to(device='cuda')

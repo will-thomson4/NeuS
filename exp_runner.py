@@ -270,6 +270,23 @@ class Runner:
         out_rgb_fine = []
         out_normal_fine = []
 
+
+        #Show depth
+        a = torch.sum(rays_d**2, dim=-1, keepdim=True)
+        b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
+        mid = 0.5 * (-b) / a
+        depth = torch.sum(depth, dim=-1, keepdim=True)            
+
+        #Save a plot of mid data
+        plt.plot(mid.cpu().numpy())
+        #save a plot of depth data
+        plt.plot(depth.cpu().numpy())
+        #save the plot to a file
+        print("Saving plot to file")
+        plt.savefig("depth-vs-mid.png")
+        plt.clf()
+
+
         for rays_o_batch, rays_d_batch, depth_batch in zip(rays_o, rays_d, depth):
             near, far = self.dataset.near_far_from_sphere(rays_o_batch, rays_d_batch, depth_batch)
             background_rgb = torch.ones([1, 3]) if self.use_white_bkgd else None
