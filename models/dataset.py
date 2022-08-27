@@ -58,12 +58,7 @@ class Dataset:
         self.masks_np = np.stack([cv.imread(im_name) for im_name in self.masks_lis]) / 256.0
 
         self.depths_lis = sorted(glob(os.path.join(self.data_dir, 'depth/*.png')))
-        self.depths_np = np.stack([cv.imread(im_name) for im_name in self.depths_lis]) / 256.0
-
-        f = open("depthImagesSizing.txt", "w")
-        f.write("Depth image example" + str(self.depths_np[0][0][0]))
-        f.close()
-        
+        self.depths_np = np.stack([cv.imread(im_name, cv.IMREAD_GRAYSCALE) for im_name in self.depths_lis]) / 256.0
 
         # world_mat is a projection matrix from world to image
         self.world_mats_np = [camera_dict['world_mat_%d' % idx].astype(np.float32) for idx in range(self.n_images)]
@@ -117,10 +112,6 @@ class Dataset:
         pixels_x, pixels_y = torch.meshgrid(tx, ty)
 
         depth = self.depth_images[img_idx][(pixels_y.long(), pixels_x.long())]
-
-        # f = open("pixelSizing.txt", "w")
-        # f.write("Pixel x sizing: " + str(pixels_x.shape) + " | Pixel y sizing: " + str(pixels_y.shape))
-        # f.close()
         
         p = torch.stack([pixels_x, pixels_y, torch.ones_like(pixels_y)], dim=-1) # W, H, 3
         p = torch.matmul(self.intrinsics_all_inv[img_idx, None, None, :3, :3], p[:, :, :, None]).squeeze()  # W, H, 3

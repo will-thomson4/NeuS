@@ -116,7 +116,7 @@ class Runner:
             
             #Pass depth into near_far_from_sphere
             near, far = self.dataset.near_far_from_sphere(rays_o, rays_d)
-            print("Just got near far from sphere")
+
             background_rgb = None
             if self.use_white_bkgd:
                 background_rgb = torch.ones([1, 3])
@@ -267,15 +267,22 @@ class Runner:
         # rays_d = rays_d.reshape(-1, 3).split(self.batch_size)
         # depth = depth.reshape(-1, 3).split(self.batch_size)
 
+        f = open("pixelSizing.txt", "w")
+        f.write("Depth start: " + str(depth.shape))
+
         rays_o = rays_o.reshape(-1, 3)
         rays_d = rays_d.reshape(-1, 3)
         depth = depth.reshape(-1, 3)
         
+        f.write("Depth mid: " + str(depth.shape))
+
         #Show depth
         a = torch.sum(rays_d**2, dim=-1, keepdim=True)
         b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
         mid = 0.5 * (-b) / a
         depth = torch.sum(depth, dim=-1, keepdim=True) 
+
+        f.write("Depth end: " + str(depth.shape))
 
         plt.imshow(mid.cpu().numpy(), cmap='hot', interpolation='nearest')
         plt.savefig("mid-heatmap.png")
@@ -293,6 +300,8 @@ class Runner:
         # print("Saving plot to file")
         # plt.savefig("depth-vs-mid.png")
         # plt.clf()
+
+        f.close()
 
         rays_o = rays_o.split(self.batch_size)
         rays_d = rays_d.split(self.batch_size)
