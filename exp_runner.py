@@ -278,7 +278,6 @@ class Runner:
         depth = torch.sum(depth, dim=-1, keepdim=True) 
 
         plt.imshow(mid, cmap='hot', interpolation='nearest')
-        plt.show()
         plt.savefig("heatmap.png")
         plt.clf()
 

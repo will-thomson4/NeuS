@@ -115,7 +115,6 @@ class Dataset:
 
         f = open("infoFile.txt", "w")
         f.write("W: " + str(self.W) + "| H: " + str(self.H) + " | Tx: " + str(tx.shape) + " | Ty: " + str(ty.shape))
-        f.write(pixels_x)
         f.close()
         
         p = torch.stack([pixels_x, pixels_y, torch.ones_like(pixels_y)], dim=-1) # W, H, 3
