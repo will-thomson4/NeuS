@@ -263,15 +263,21 @@ class Runner:
             resolution_level = self.validate_resolution_level
         rays_o, rays_d, depth  = self.dataset.gen_rays_at(idx, resolution_level=resolution_level)
         H, W, _ = rays_o.shape
+        # rays_o = rays_o.reshape(-1, 3).split(self.batch_size)
+        # rays_d = rays_d.reshape(-1, 3).split(self.batch_size)
+        # depth = depth.reshape(-1, 3).split(self.batch_size)
 
-        print("Rays d", rays_d)
-        print("rays o", rays_o)
+        rays_o = rays_o.reshape(-1, 3)
+        rays_d = rays_d.reshape(-1, 3)
+        depth = depth.reshape(-1, 3)
+        print("Rays d", rays_d.shape)
+        print("rays o", rays_o.shape)
+        print("depth", depth.shape)
         #Show depth
         a = torch.sum(rays_d**2, dim=-1, keepdim=True)
         b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
         mid = 0.5 * (-b) / a
         depth = torch.sum(depth, dim=-1, keepdim=True)            
-
         #Save a plot of mid data
         plt.plot(mid.cpu().numpy())
         #save a plot of depth data
@@ -280,10 +286,9 @@ class Runner:
         print("Saving plot to file")
         plt.savefig("depth-vs-mid.png")
         plt.clf()
-
-        rays_o = rays_o.reshape(-1, 3).split(self.batch_size)
-        rays_d = rays_d.reshape(-1, 3).split(self.batch_size)
-        depth = depth.reshape(-1, 3).split(self.batch_size)
+        rays_o = rays_o.split(self.batch_size)
+        rays_d = rays_d.split(self.batch_size)
+        depth = depth.split(self.batch_size)
 
         out_rgb_fine = []
         out_normal_fine = []
