@@ -275,15 +275,22 @@ class Runner:
         a = torch.sum(rays_d**2, dim=-1, keepdim=True)
         b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
         mid = 0.5 * (-b) / a
-        depth = torch.sum(depth, dim=-1, keepdim=True)            
-        #Save a plot of mid data
-        plt.plot(mid.cpu().numpy()[:10000])
-        #save a plot of depth data
-        plt.plot(depth.cpu().numpy()[:10000])
-        #save the plot to a file
-        print("Saving plot to file")
-        plt.savefig("depth-vs-mid.png")
+        depth = torch.sum(depth, dim=-1, keepdim=True) 
+
+        plt.imshow(mid, cmap='hot', interpolation='nearest')
+        plt.show()
+        plt.savefig("heatmap.png")
         plt.clf()
+
+        # #Save a plot of mid data
+        # plt.plot(mid.cpu().numpy()[:10000])
+        # #save a plot of depth data
+        # plt.plot(depth.cpu().numpy()[:10000])
+        # #save the plot to a file
+        # print("Saving plot to file")
+        # plt.savefig("depth-vs-mid.png")
+        # plt.clf()
+
         rays_o = rays_o.split(self.batch_size)
         rays_d = rays_d.split(self.batch_size)
         depth = depth.split(self.batch_size)
