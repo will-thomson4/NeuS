@@ -113,8 +113,8 @@ class Dataset:
 
         depth = self.depth_images[img_idx][(pixels_y.long(), pixels_x.long())]
 
-        f = open("depthSizing.txt", "w")
-        f.write("Depth sizing: " + str(depth.shape))
+        f = open("pixelSizing.txt", "w")
+        f.write("Pixel x sizing: " + str(pixels_x.shape) + " | Pixel y sizing: " + str(pixels_y.shape))
         f.close()
         
         p = torch.stack([pixels_x, pixels_y, torch.ones_like(pixels_y)], dim=-1) # W, H, 3
