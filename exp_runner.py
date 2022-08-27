@@ -268,15 +268,15 @@ class Runner:
         # depth = depth.reshape(-1, 3).split(self.batch_size)
 
         f = open("pixelSizing.txt", "w")
-        f.write("Depth start: " + str(depth.shape))
 
         rays_o = rays_o.reshape(-1, 3)
         rays_d = rays_d.reshape(-1, 3)
 
 
-        plt.imshow(depth.cpu().numpy(), cmap='hot', interpolation='nearest')
-        plt.savefig("depth-heatmap.png")
-        plt.clf()
+        # plt.imshow(depth.cpu().numpy(), cmap='hot', interpolation='nearest')
+        # plt.savefig("depth-heatmap.png")
+        # plt.clf()
+
         depth = depth.reshape(-1)
         
         f.write("Depth mid: " + str(depth.shape))
@@ -286,20 +286,24 @@ class Runner:
         b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
         mid = 0.5 * (-b) / a
 
-        #Save a plot of mid data
-        plt.plot(mid.cpu().numpy()[:10000])
-        #save a plot of depth data
-        plt.plot(depth.cpu().numpy()[:10000])
-        #save the plot to a file
-        print("Saving plot to file")
-        plt.savefig("depth-vs-mid.png")
-        plt.clf()
+        # #Save a plot of mid data
+        # plt.plot(mid.cpu().numpy()[:10000])
+        # #save a plot of depth data
+        # plt.plot(depth.cpu().numpy()[:10000])
+        # #save the plot to a file
+        # print("Saving plot to file")
+        # plt.savefig("depth-vs-mid.png")
+        # plt.clf()
 
         rays_o = rays_o.split(self.batch_size)
         rays_d = rays_d.split(self.batch_size)
+
+
+        f.write("Rays shape: " + str(rays_d.shape))
+        f.write("Rays shape: " + str(rays_o.shape))
+
         depth = depth.split(self.batch_size)
 
-        f.write("Depth end: " + str(depth.shape))
         f.close()
 
         out_rgb_fine = []
