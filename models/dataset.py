@@ -184,8 +184,6 @@ class Dataset:
         #Summing the direction squared 
         a = torch.sum(rays_d**2, dim=-1, keepdim=True)
         b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
-        
-
         mid = 0.5 * (-b) / a
 
 

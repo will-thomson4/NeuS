@@ -115,7 +115,7 @@ class Runner:
             rays_o, rays_d, true_rgb, mask = data[:, :3], data[:, 3: 6], data[:, 6: 9], data[:, 9: 10]
             
             #Pass depth into near_far_from_sphere
-            near, far = self.dataset.near_far_from_sphere(rays_o, rays_d)
+            near, far = self.dataset.near_far_from_sphere(rays_o, rays_d, depth)
 
             background_rgb = None
             if self.use_white_bkgd:
@@ -271,7 +271,7 @@ class Runner:
         out_normal_fine = []
 
         for rays_o_batch, rays_d_batch, depth_batch in zip(rays_o, rays_d, depth):
-            near, far = self.dataset.near_far_from_sphere(rays_o_batch, rays_d_batch, depth_batch)
+            near, far = self.dataset.near_far_from_sphere(rays_o_batch, rays_d_batch)
             background_rgb = torch.ones([1, 3]) if self.use_white_bkgd else None
 
             render_out = self.renderer.render(rays_o_batch,
