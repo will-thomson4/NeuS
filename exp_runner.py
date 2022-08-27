@@ -281,9 +281,9 @@ class Runner:
         mid = 0.5 * (-b) / a
         depth = torch.sum(depth, dim=-1, keepdim=True)            
         #Save a plot of mid data
-        plt.plot(mid.cpu().numpy()[:100])
+        plt.plot(mid.cpu().numpy()[:1000])
         #save a plot of depth data
-        plt.plot(depth.cpu().numpy()[:100])
+        plt.plot(depth.cpu().numpy()[:1000])
         #save the plot to a file
         print("Saving plot to file")
         plt.savefig("depth-vs-mid.png")
