@@ -269,6 +269,8 @@ class Runner:
 
         f = open("infoFile.txt", "w")
 
+        f.write("Depth example: " + str(depth[0][0]))
+
         f.write("depth shape before: " + str(depth.shape))
 
         rays_o = rays_o.reshape(-1, 3)

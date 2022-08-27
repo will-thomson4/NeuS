@@ -112,6 +112,10 @@ class Dataset:
         pixels_x, pixels_y = torch.meshgrid(tx, ty)
 
         depth = self.depth_images[img_idx][(pixels_y.long(), pixels_x.long())]
+
+        f = open("depthSizing.txt", "w")
+        f.write("Depth sizing: " + str(depth.shape))
+        f.close()
         
         p = torch.stack([pixels_x, pixels_y, torch.ones_like(pixels_y)], dim=-1) # W, H, 3
         p = torch.matmul(self.intrinsics_all_inv[img_idx, None, None, :3, :3], p[:, :, :, None]).squeeze()  # W, H, 3
