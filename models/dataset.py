@@ -191,7 +191,7 @@ class Dataset:
 
         #Use depth as mid
         if depth is not None:
-            depth = torch.sum(depth, dim=-1, keepdim=True)            
+            # depth = torch.sum(depth, dim=-1, keepdim=True)            
             # mean = torch.mean(depth)
             # std = torch.std(depth)
             #depth = (depth-mean)/std
@@ -200,13 +200,13 @@ class Dataset:
             #depth = depth * (torch.max(mid) - torch.min(mid)) + torch.min(mid)
 
             #Save a plot of mid data
-            # plt.plot(mid.cpu().numpy())
-            # #save a plot of depth data
-            # plt.plot(depth.cpu().numpy())
-            # #save the plot to a file
-            # print("Saving plot to file")
-            # plt.savefig("depth2.png")
-            # plt.clf()
+            plt.plot(mid.cpu().numpy())
+            #save a plot of depth data
+            plt.plot(depth.cpu().numpy())
+            #save the plot to a file
+            print("Saving plot to file")
+            plt.savefig("depth-plot.png")
+            plt.clf()
 
             # mid = depth
 
