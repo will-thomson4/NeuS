@@ -61,7 +61,7 @@ class Dataset:
         self.depths_np = np.stack([cv.imread(im_name) for im_name in self.depths_lis]) / 256.0
 
         f = open("depthImagesSizing.txt", "w")
-        f.write("Depth image np array size" + str(self.depths_np.shape))
+        f.write("Depth image example" + str(self.depths_np[0][0][0]))
         f.close()
         
 
