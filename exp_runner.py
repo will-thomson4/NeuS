@@ -267,25 +267,23 @@ class Runner:
         # rays_d = rays_d.reshape(-1, 3).split(self.batch_size)
         # depth = depth.reshape(-1, 3).split(self.batch_size)
 
-        rays_o = rays_o.reshape(-1, 3)
-        rays_d = rays_d.reshape(-1, 3)
-        depth = depth.reshape(-1, 3)
-        print("Rays d", rays_d.shape)
-        print("rays o", rays_o.shape)
-        print("depth", depth.shape)
-
         f = open("infoFile.txt", "w")
         f.write("Rays d" + str(rays_d.shape) + "| Rays o: " + str(rays_o.shape) + " | Depth: " + str(depth.shape)) 
         f.close()
+
+        rays_o = rays_o.reshape(-1, 3)
+        rays_d = rays_d.reshape(-1, 3)
+        depth = depth.reshape(-1, 3)
+
         #Show depth
         a = torch.sum(rays_d**2, dim=-1, keepdim=True)
         b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
         mid = 0.5 * (-b) / a
         depth = torch.sum(depth, dim=-1, keepdim=True)            
         #Save a plot of mid data
-        plt.plot(mid.cpu().numpy()[:20])
+        plt.plot(mid.cpu().numpy()[:100])
         #save a plot of depth data
-        plt.plot(depth.cpu().numpy()[:20])
+        plt.plot(depth.cpu().numpy()[:100])
         #save the plot to a file
         print("Saving plot to file")
         plt.savefig("depth-vs-mid.png")
