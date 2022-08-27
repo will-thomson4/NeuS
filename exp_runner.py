@@ -267,18 +267,31 @@ class Runner:
         # rays_d = rays_d.reshape(-1, 3).split(self.batch_size)
         # depth = depth.reshape(-1, 3).split(self.batch_size)
 
+        f = open("infoFile.txt", "w")
+
+        f.write("depth shape before: ", depth.shape)
+
         rays_o = rays_o.reshape(-1, 3)
         rays_d = rays_d.reshape(-1, 3)
         depth = depth.reshape(-1, 3)
 
+        f.write("depth shape mid: ", depth.shape)
+        
         #Show depth
         a = torch.sum(rays_d**2, dim=-1, keepdim=True)
         b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
         mid = 0.5 * (-b) / a
         depth = torch.sum(depth, dim=-1, keepdim=True) 
 
+        f.write("depth shape after: ", depth.shape)
+        f.close()
+
         plt.imshow(mid, cmap='hot', interpolation='nearest')
-        plt.savefig("heatmap.png")
+        plt.savefig("mid-heatmap.png")
+        plt.clf()
+
+        plt.imshow(depth, cmap='hot', interpolation='nearest')
+        plt.savefig("depth-heatmap.png")
         plt.clf()
 
         # #Save a plot of mid data
