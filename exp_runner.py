@@ -265,19 +265,25 @@ class Runner:
         H, W, _ = rays_o.shape
 
         # ##########
-        # a = torch.sum(rays_d**2, dim=-1, keepdim=True)
-        # b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
-        # mid = 0.5 * (-b) / a
-        # mid = mid.squeeze()
+        a = torch.sum(rays_d**2, dim=-1, keepdim=True)
+        b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
+        mid = 0.5 * (-b) / a
+        mid = mid.squeeze()
 
-        # depth = depth.to(device='cuda')
-        # mid = mid * depth
+        depth = depth.to(device='cuda')
+        mid = mid * depth
 
-        # plt.imshow(mid.cpu().numpy(), cmap='hot', interpolation='nearest')
-        # cb = plt.colorbar()
-        # cb.set_label('Relative distance from camera')
-        # plt.savefig("combined-plot.png")
-        # plt.clf()
+        plt.imshow(depth.cpu().numpy(), cmap='hot', interpolation='nearest')
+        cb = plt.colorbar()
+        cb.set_label('Relative distance from camera')
+        plt.savefig("depth-plot.png")
+        plt.clf()
+
+        plt.imshow(mid.cpu().numpy(), cmap='hot', interpolation='nearest')
+        cb = plt.colorbar()
+        cb.set_label('Relative distance from camera')
+        plt.savefig("combined-plot.png")
+        plt.clf()
         # ##########
 
         rays_o = rays_o.reshape(-1, 3).split(self.batch_size)
