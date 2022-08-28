@@ -190,14 +190,8 @@ class Dataset:
         if depth is not None:
             depth = depth.to(device='cuda')
 
-            f = open("tensorSizes.txt", "w")
-            f.write("Mid: " + str(mid.size()) + " Depth: " + str(depth.size()) + " Rays_o:" + str(rays_o.size()) + " Rays_d:" + str(rays_d.size()))
-            
             depth = torch.unsqueeze(depth, 1)
             mid = mid * depth
-
-            f.write("Mid: " + str(mid.size()) + " Depth: " + str(depth.size()))
-            f.close()
 
         near = mid - 1
         far = mid + 1
