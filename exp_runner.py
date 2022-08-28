@@ -271,8 +271,17 @@ class Runner:
         mid = mid.squeeze()
 
 
-        plt.imshow(mid.cpu().numpy(), cmap='hot', interpolation='nearest')
+        plt.imshow(depth.cpu().numpy(), cmap='hot', interpolation='nearest')
+        cb = plt.colorbar()
+        cb.set_label('Distance From Camera')
+        plt.savefig("depth-plot.png")
+        plt.clf()
+
+        plt.imshow(depth.cpu().numpy(), cmap='hot', interpolation='nearest')
+        cb = plt.colorbar()
+        cb.set_label('Distance From Camera')
         plt.savefig("mid-plot.png")
+        plt.clf()
         ##########
 
         

@@ -58,7 +58,7 @@ class Dataset:
         self.masks_np = np.stack([cv.imread(im_name) for im_name in self.masks_lis]) / 256.0
 
         self.depths_lis = sorted(glob(os.path.join(self.data_dir, 'depth/*.png')))
-        self.depths_np = np.stack([cv.imread(im_name, cv.IMREAD_GRAYSCALE) for im_name in self.depths_lis]) / 256.0
+        self.depths_np = np.stack([(256 - cv.imread(im_name, cv.IMREAD_GRAYSCALE) ) for im_name in self.depths_lis]) / 256.0
 
         # world_mat is a projection matrix from world to image
         self.world_mats_np = [camera_dict['world_mat_%d' % idx].astype(np.float32) for idx in range(self.n_images)]
