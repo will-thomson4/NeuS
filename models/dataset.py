@@ -208,13 +208,7 @@ class Dataset:
             # plt.savefig("depth-plot.png")
             # plt.clf()
 
-            #torch.unsqueeze(depth, 0)
-            depth = torch.unsqueeze(depth, 1)
-            
-            f = open("sizes.txt", "w")
-            f.write("Mid: " + str(mid.size()) + " Depth: " + str(depth.size()))
-            f.close()
-            
+            depth = torch.unsqueeze(depth, 1)            
 
             # mid = depth
 
