@@ -189,6 +189,11 @@ class Dataset:
         #Use depth to inform mid
         if depth is not None:
             depth = depth.to(device='cuda')
+
+            f = open("tensorSizes.txt", "w")
+            f.write("Mid: " + str(mid.size) + " Depth: " + str(depth.size) + " Rays_o:" + rays_o.size + " Rays_d:" + rays_d.size)
+            f.close()
+
             mid = mid * depth 
 
         near = mid - 1
