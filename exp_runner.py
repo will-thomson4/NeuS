@@ -270,6 +270,8 @@ class Runner:
         mid = 0.5 * (-b) / a
         mid = mid.squeeze()
 
+        depth = depth.to(device='cuda')
+
         mid = mid * depth
 
         plt.imshow(mid.cpu().numpy(), cmap='hot', interpolation='nearest')
