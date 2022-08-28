@@ -271,7 +271,7 @@ class Runner:
         mid = mid.squeeze()
 
 
-        plt.imshow(mid, cmap='hot', interpolation='nearest')
+        plt.imshow(mid.cpu().numpy(), cmap='hot', interpolation='nearest')
         plt.savefig("mid-plot.png")
         ##########
 
