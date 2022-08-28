@@ -209,7 +209,7 @@ class Dataset:
             plt.clf()
             
             f = open("sizes.txt", "w")
-            f.write("Mid: " + str(mid.size()) + " Depth: " + depth.size())
+            f.write("Mid: " + str(mid.size()) + " Depth: " + str(depth.size()))
 
             # mid = depth
 
