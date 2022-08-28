@@ -194,9 +194,9 @@ class Dataset:
             f.write("Mid: " + str(mid.size()) + " Depth: " + str(depth.size()) + " Rays_o:" + str(rays_o.size()) + " Rays_d:" + str(rays_d.size()))
             
             depth = torch.unsqueeze(depth, 0)
-            mid = mid * depth 
+            mid = mid * depth
 
-            f.write("Mid: " + str(mid.size()))
+            f.write("Mid: " + str(mid.size()) + " Depth: " + str(depth.size()))
             f.close()
 
         near = mid - 1
