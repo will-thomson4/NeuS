@@ -194,7 +194,7 @@ class Dataset:
             mid = mid * depth
 
         near = mid - 0.5
-        far = mid + 0.5
+        far = mid + 1
 
         near = near.to(device='cuda')
         far = far.to(device='cuda')
