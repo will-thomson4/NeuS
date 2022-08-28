@@ -272,13 +272,13 @@ class Runner:
 
         plt.imshow(depth.cpu().numpy(), cmap='hot', interpolation='nearest')
         cb = plt.colorbar()
-        cb.set_label('Distance From Camera')
+        cb.set_label('Relative distance from camera')
         plt.savefig("depth-plot.png")
         plt.clf()
 
         plt.imshow(mid.cpu().numpy(), cmap='hot', interpolation='nearest')
         cb = plt.colorbar()
-        cb.set_label('Distance From Camera')
+        cb.set_label('Relative distance from camera')
         plt.savefig("mid-plot.png")
         plt.clf()
         ##########
