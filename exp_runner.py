@@ -269,7 +269,7 @@ class Runner:
         mid = 0.5 * (-b) / a
 
         f = open("midSize.txt", "w")
-        f.write(mid.shape)
+        f.write(str(mid.shape))
         f.close()
         
         rays_o = rays_o.reshape(-1, 3).split(self.batch_size)

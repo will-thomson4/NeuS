@@ -199,17 +199,21 @@ class Dataset:
 
             depth = depth + 2
 
-            #Save a plot of mid data
-            plt.plot(mid.cpu().numpy())
-            #save a plot of depth data
-            plt.plot(depth.cpu().numpy())
-            #save the plot to a file
-            print("Saving plot to file")
-            plt.savefig("depth-plot.png")
-            plt.clf()
+            # #Save a plot of mid data
+            # plt.plot(mid.cpu().numpy())
+            # #save a plot of depth data
+            # plt.plot(depth.cpu().numpy())
+            # #save the plot to a file
+            # print("Saving plot to file")
+            # plt.savefig("depth-plot.png")
+            # plt.clf()
+
+            torch.unsqueeze(depth, 1)
             
             f = open("sizes.txt", "w")
             f.write("Mid: " + str(mid.size()) + " Depth: " + str(depth.size()))
+            f.close()
+            
 
             # mid = depth
 
