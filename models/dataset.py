@@ -193,8 +193,8 @@ class Dataset:
             depth = torch.unsqueeze(depth, 1)
             mid = mid * depth
 
-        near = mid - 1
-        far = mid + 1
+        near = mid - 0.5
+        far = mid + 0.5
 
         near = near.to(device='cuda')
         far = far.to(device='cuda')
