@@ -191,7 +191,7 @@ class Dataset:
             depth = depth.to(device='cuda')
 
             f = open("tensorSizes.txt", "w")
-            f.write("Mid: " + str(mid.size) + " Depth: " + str(depth.size) + " Rays_o:" + rays_o.size + " Rays_d:" + rays_d.size)
+            f.write("Mid: " + str(mid.size) + " Depth: " + str(depth.size) + " Rays_o:" + str(rays_o.size) + " Rays_d:" + str(rays_d.size))
             f.close()
 
             mid = mid * depth 
