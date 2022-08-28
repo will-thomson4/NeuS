@@ -263,6 +263,15 @@ class Runner:
             resolution_level = self.validate_resolution_level
         rays_o, rays_d, depth  = self.dataset.gen_rays_at(idx, resolution_level=resolution_level)
         H, W, _ = rays_o.shape
+
+        a = torch.sum(rays_d**2, dim=-1, keepdim=True)
+        b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
+        mid = 0.5 * (-b) / a
+
+        f = open("midSize.txt", "w")
+        f.write(mid.shape)
+        f.close()
+        
         rays_o = rays_o.reshape(-1, 3).split(self.batch_size)
         rays_d = rays_d.reshape(-1, 3).split(self.batch_size)
         depth = depth.reshape(-1).split(self.batch_size)
