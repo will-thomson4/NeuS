@@ -270,21 +270,19 @@ class Runner:
         mid = 0.5 * (-b) / a
         mid = mid.squeeze()
 
-
         plt.imshow(depth.cpu().numpy(), cmap='hot', interpolation='nearest')
         cb = plt.colorbar()
         cb.set_label('Distance From Camera')
         plt.savefig("depth-plot.png")
         plt.clf()
 
-        plt.imshow(depth.cpu().numpy(), cmap='hot', interpolation='nearest')
+        plt.imshow(mid.cpu().numpy(), cmap='hot', interpolation='nearest')
         cb = plt.colorbar()
         cb.set_label('Distance From Camera')
         plt.savefig("mid-plot.png")
         plt.clf()
         ##########
 
-        
         rays_o = rays_o.reshape(-1, 3).split(self.batch_size)
         rays_d = rays_d.reshape(-1, 3).split(self.batch_size)
         depth = depth.reshape(-1).split(self.batch_size)
