@@ -187,30 +187,22 @@ class Dataset:
         mid = 0.5 * (-b) / a
 
 
-        #Use depth as mid
+        #Use depth to inform mid
         if depth is not None:
-            # depth = torch.sum(depth, dim=-1, keepdim=True)            
-            # mean = torch.mean(depth)
-            # std = torch.std(depth)
-            #depth = (depth-mean)/std
-            #depth = depth * 0.17 + 1.75
-            #depth = depth.to(device='cuda')
-            #depth = depth * (torch.max(mid) - torch.min(mid)) + torch.min(mid)
+            # depth = depth.to(device='cuda')
+            depth = depth 
 
-            depth = depth + 2
+            # # #Save a plot of mid data
+            # # plt.plot(mid.cpu().numpy())
+            # # #save a plot of depth data
+            # # plt.plot(depth.cpu().numpy())
+            # # #save the plot to a file
+            # # print("Saving plot to file")
+            # # plt.savefig("depth-plot.png")
+            # # plt.clf()
 
-            # #Save a plot of mid data
-            # plt.plot(mid.cpu().numpy())
-            # #save a plot of depth data
-            # plt.plot(depth.cpu().numpy())
-            # #save the plot to a file
-            # print("Saving plot to file")
-            # plt.savefig("depth-plot.png")
-            # plt.clf()
-
-            depth = torch.unsqueeze(depth, 1)            
-
-            # mid = depth
+            # depth = torch.unsqueeze(depth, 1)            
+            # mid = depth  
 
         near = mid - 1
         far = mid + 1
