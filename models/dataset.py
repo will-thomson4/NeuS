@@ -186,14 +186,14 @@ class Dataset:
         b = 2.0 * torch.sum(rays_o * rays_d, dim=-1, keepdim=True)
         mid = 0.5 * (-b) / a
 
-        #Use depth to inform mid
-        if depth is not None:
-            depth = depth.to(device='cuda')
+        # #Use depth to inform mid
+        # if depth is not None:
+        #     depth = depth.to(device='cuda')
 
-            depth = torch.unsqueeze(depth, 1)
-            mid = mid * depth
+        #     depth = torch.unsqueeze(depth, 1)
+        #     mid = mid * depth
 
-        near = mid - 0.5
+        near = mid - 1
         far = mid + 1
 
         near = near.to(device='cuda')
